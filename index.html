@@ -3,7 +3,7 @@
 <head>
 <link rel="icon" type="image/png" href="./baccarat.png">
     <meta charset="UTF-8">
-    <title>專業百家樂全路單系統 - 視覺優化版</title>
+    <title>百家樂系統 V0.1</title>
     <style>
         :root {
             --banker: #d93030; --player: #2b56bf; --tie: #28a745;
@@ -17,7 +17,7 @@
             margin: 0; padding: 20px; height: 100vh; overflow-y: auto;
         }
 
-        /* --- 新登入視覺 --- */
+        /* --- 登入介面 --- */
         #loginOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle, #2d2d2d 0%, #121212 100%);
@@ -29,29 +29,20 @@
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 0, 0.1);
             text-align: center; width: 350px; backdrop-filter: blur(10px);
         }
-        .login-box h2 { 
-            margin: 0 0 25px 0; color: #ffff00; letter-spacing: 3px; font-size: 24px;
-            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
-        }
-        .login-box input {
-            width: 100%; padding: 12px 15px; margin: 12px 0; border-radius: 8px; border: 1px solid #444;
-            background: #1e1e1e; color: #fff; font-size: 16px; box-sizing: border-box; transition: 0.3s;
-        }
+        .login-box h2 { margin: 0 0 25px 0; color: #ffff00; letter-spacing: 3px; font-size: 24px; text-shadow: 0 0 10px rgba(255, 255, 0, 0.5); }
+        .login-box input { width: 100%; padding: 12px 15px; margin: 12px 0; border-radius: 8px; border: 1px solid #444; background: #1e1e1e; color: #fff; font-size: 16px; box-sizing: border-box; transition: 0.3s; }
         .login-box input:focus { outline: none; border-color: #ffff00; box-shadow: 0 0 5px rgba(255, 255, 0, 0.3); }
-        .login-box button {
-            width: 100%; padding: 12px; margin-top: 20px;
-            background: linear-gradient(135deg, #ffff00 0%, #ffd700 100%);
-            color: #000; border: none; font-weight: bold; font-size: 18px; cursor: pointer; border-radius: 8px;
-            transition: 0.2s;
-        }
+        .login-box button { width: 100%; padding: 12px; margin-top: 20px; background: linear-gradient(135deg, #ffff00 0%, #ffd700 100%); color: #000; border: none; font-weight: bold; font-size: 18px; cursor: pointer; border-radius: 8px; transition: 0.2s; }
         .login-box button:hover { box-shadow: 0 0 15px rgba(255, 255, 0, 0.4); transform: translateY(-2px); }
 
-        /* --- 主畫面內容 --- */
+        /* --- 主畫面 --- */
         #mainContent { display: none; width: 1000px; flex-direction: column; gap: 15px; }
         h3 { margin: 0 0 5px 2px; font-size: 14px; color: #aaa; }
         .road-viewport { background: #fff; border: 1px solid #444; overflow-x: auto; scrollbar-width: none; border-radius: 2px; }
         .grid { display: grid; grid-auto-flow: column; background-color: var(--grid-line); gap: 1px; border: 1px solid var(--grid-line); width: max-content; align-content: start; }
         .cell { background: white; display: flex; align-items: center; justify-content: center; position: relative; width: 100%; height: 100%; }
+
+        /* 大路與問路系統 */
         .big-road-grid { grid-template-rows: repeat(6, 32px); height: 198px; }
         .split-row { display: flex; gap: 15px; height: 180px; }
         .half-block { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
@@ -59,18 +50,26 @@
         .predict-box { display: flex; width: 100%; justify-content: space-around; margin-bottom: 5px; }
         .predict-val { display: flex; gap: 8px; font-family: monospace; }
         .sym { font-weight: bold; font-size: 18px; }
+
         .input-group { display: flex; gap: 10px; width: 100%; }
         .btn-input { flex: 1; height: 50px; font-size: 18px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; color: white; box-shadow: 0 3px 0 rgba(0,0,0,0.4); }
         .btn-b { background: var(--banker); } .btn-p { background: var(--player); } .btn-t { background: var(--tie); }
         .btn-group-func { display: flex; gap: 10px; width: 100%; }
         .btn-func { flex: 1; height: 38px; cursor: pointer; border: 1px solid #666; color: #ccc; background: #444; border-radius: 4px; }
         .reset-btn { background-color: #000000 !important; color: #ffff00 !important; border: 1px solid #ffff00; }
+
+        /* 下三路與珠盤路 */
         .small-grid { grid-template-rows: repeat(6, 18px); height: 114px; }
         .bead-plate-grid { grid-template-rows: repeat(6, 36px); height: 222px; }
         .big-circle { width: 24px; height: 24px; border: 3px solid; border-radius: 50%; box-sizing: border-box; }
         .bead { width: 30px; height: 30px; border-radius: 50%; color: #fff !important; font-size: 15px; font-weight: bold; display: flex; align-items: center; justify-content: center; }
         .bead.B { background: var(--banker); } .bead.P { background: var(--player); } .bead.T { background: var(--tie); }
-        .tie-slash { position: absolute; width: 80%; height: 2px; background: var(--tie); transform: rotate(-45deg); }
+
+        /* 和局相關樣式 */
+        .tie-slash { position: absolute; width: 80%; height: 2px; background: var(--tie); transform: rotate(-45deg); z-index: 1; }
+        .tie-num { position: absolute; color: var(--tie); font-size: 11px; font-weight: 900; bottom: 2px; right: 4px; z-index: 2; line-height: 1; }
+
+        /* 下三路圖標 */
         .eye-circle { width: 12px; height: 12px; border: 2px solid; border-radius: 50%; }
         .small-dot { width: 10px; height: 10px; border-radius: 50%; }
         .cock-line { width: 14px; height: 2px; transform: rotate(-45deg); }
@@ -84,10 +83,10 @@
 
 <div id="loginOverlay">
     <div class="login-box">
-        <h2>系統驗證</h2>
-        <input type="text" id="username" placeholder="請輸入帳號" autocomplete="off">
-        <input type="password" id="password" placeholder="請輸入密碼">
-        <button onclick="checkLogin()">進入系統</button>
+        <i class="fas fa-dice"><h2>登入介面</h2>
+        <input type="text" id="username" placeholder="帳號" autocomplete="off">
+        <input type="password" id="password" placeholder="密碼">
+        <button onclick="checkLogin()">進入</button>
         <p id="loginError" style="color: #ff4444; font-size: 14px; margin-top: 15px; min-height: 20px;"></p>
     </div>
 </div>
@@ -120,9 +119,11 @@
         <div class="half-block"><h3>蟑螂路 (Cockroach)</h3><div class="road-viewport"><div id="cockroachRoad" class="grid small-grid"></div></div></div>
     </div>
     <div><h3>珠盤路 (Bead Plate)</h3><div class="road-viewport"><div id="beadPlate" class="grid bead-plate-grid"></div></div></div>
+
 <footer>
             <p>Copyright © 2026 MENG</p>
-        </footer>
+</footer>
+
 </div>
 
 <script>
@@ -133,7 +134,7 @@
             document.getElementById('loginOverlay').style.display = 'none';
             document.getElementById('mainContent').style.display = 'flex';
         } else {
-            document.getElementById('loginError').innerText = '帳密錯誤，請重新輸入';
+            document.getElementById('loginError').innerText = '帳密錯誤';
         }
     }
 
@@ -183,7 +184,10 @@
     function getBigRoadDataForHistory(input) {
         let matrix = [], results = [], lastW = null, lastP = {r:0, c:0}, isH = false;
         input.forEach(res => {
-            if (res === 'T') { if (results.length > 0) results[results.length-1].tie++; return; }
+            if (res === 'T') { 
+                if (results.length > 0) results[results.length-1].tie++; 
+                return; 
+            }
             let r, c;
             if (!lastW) { r=0; c=0; }
             else if (res === lastW) {
@@ -213,17 +217,36 @@
         const syms = ['○', '●', '／'];
         return res.map((v, i) => v ? `<span class="sym" style="color:var(--${v==='B'?'banker':'player'})">${syms[i]}</span>` : '--').join('');
     }
+
+    // --- 補回連和顯示邏輯 ---
     function renderRoad(id, data, style) {
         const el = document.getElementById(id); el.innerHTML = '';
         const isBig = style === 'big', size = isBig ? 32 : 18;
         const maxC = Math.max(isBig ? 30 : 26, data.reduce((acc, d) => Math.max(acc, d.c), 0) + 5);
         el.style.gridTemplateColumns = `repeat(${maxC + 1}, ${size}px)`;
         for(let i=0; i<(maxC+1)*6; i++) el.appendChild(document.createElement('div')).className = 'cell';
+        
         data.forEach(d => {
             const target = el.children[d.c * 6 + d.r];
             if (isBig) {
-                target.appendChild(document.createElement('div')).className = `big-circle ${d.type}`;
-                if(d.tie > 0) target.appendChild(document.createElement('div')).className = 'tie-slash';
+                // 畫庄/閒圈
+                const circ = document.createElement('div');
+                circ.className = `big-circle ${d.type}`;
+                target.appendChild(circ);
+                
+                // 畫和局斜線與數字
+                if(d.tie > 0) {
+                    const slash = document.createElement('div');
+                    slash.className = 'tie-slash';
+                    target.appendChild(slash);
+                    
+                    if(d.tie > 1) {
+                        const num = document.createElement('div');
+                        num.className = 'tie-num';
+                        num.innerText = d.tie;
+                        target.appendChild(num);
+                    }
+                }
             } else {
                 let icon = document.createElement('div');
                 if(style==='eye') icon.className = `eye-circle ${d.type==='B'?'B':'P'}`;
@@ -233,6 +256,7 @@
             }
         });
     }
+
     function convertToFormat(colors) {
         let matrix = [], res = [], lastC = null, lastP = {r:0, c:0}, isH = false;
         colors.forEach(t => {
@@ -250,13 +274,11 @@
     }
 
     function renderBead() {
-        const el = document.getElementById('beadPlate'); 
-        el.innerHTML = '';
+        const el = document.getElementById('beadPlate'); el.innerHTML = '';
         const cols = Math.max(28, Math.ceil(history.length / 6) + 1);
         el.style.gridTemplateColumns = `repeat(${cols}, 36px)`;
         for(let i=0; i<cols*6; i++) {
-            const cell = el.appendChild(document.createElement('div')); 
-            cell.className = 'cell';
+            const cell = el.appendChild(document.createElement('div')); cell.className = 'cell';
             const type = history[i];
             if(type) {
                 const b = cell.appendChild(document.createElement('div')); 
