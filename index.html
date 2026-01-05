@@ -3,7 +3,7 @@
 <head>
 <link rel="icon" type="image/png" href="./baccarat.png">
     <meta charset="UTF-8">
-    <title>百家樂系統 V0.1</title>
+    <title>百家樂系統</title>
     <style>
         :root {
             --banker: #d93030; --player: #2b56bf; --tie: #28a745;
@@ -83,7 +83,7 @@
 
 <div id="loginOverlay">
     <div class="login-box">
-        <i class="fas fa-dice"><h2>登入介面</h2>
+        <h2>系統驗證</h2>
         <input type="text" id="username" placeholder="帳號" autocomplete="off">
         <input type="password" id="password" placeholder="密碼">
         <button onclick="checkLogin()">進入</button>
@@ -92,15 +92,15 @@
 </div>
 
 <div id="mainContent" class="layout-container">
-    <div><h3>大路 (Big Road)</h3><div class="road-viewport"><div id="bigRoad" class="grid big-road-grid"></div></div></div>
+    <div><h3>大路</h3><div class="road-viewport"><div id="bigRoad" class="grid big-road-grid"></div></div></div>
     <div class="split-row">
-        <div class="half-block"><h3>大眼仔 (Big Eye Boy)</h3><div class="road-viewport"><div id="bigEyeBoy" class="grid small-grid"></div></div></div>
+        <div class="half-block"><h3>大眼仔</h3><div class="road-viewport"><div id="bigEyeBoy" class="grid small-grid"></div></div></div>
         <div class="half-block">
-            <h3>控制台 (問路系統)</h3>
+            <h3>控制台</h3>
             <div class="controls-panel">
                 <div class="predict-box">
-                    <div class="predict-item"><span style="color:var(--banker)">庄問路: </span><span class="predict-val" id="valB">-- -- --</span></div>
-                    <div class="predict-item"><span style="color:var(--player)">閒問路: </span><span class="predict-val" id="valP">-- -- --</span></div>
+                    <div class="predict-item"><span style="color:var(--banker)">庄: </span><span class="predict-val" id="valB">-- -- --</span></div>
+                    <div class="predict-item"><span style="color:var(--player)">閒: </span><span class="predict-val" id="valP">-- -- --</span></div>
                 </div>
                 <div class="input-group">
                     <button class="btn-input btn-b" onclick="quickAdd('B')">庄</button>
@@ -108,17 +108,17 @@
                     <button class="btn-input btn-t" onclick="quickAdd('T')">和</button>
                 </div>
                 <div class="btn-group-func">
-                    <button class="btn-func" onclick="undoLast()">退回一步 (BS)</button>
-                    <button class="btn-func reset-btn" onclick="resetGame()">重新開局</button>
+                    <button class="btn-func" onclick="undoLast()">退一步</button>
+                    <button class="btn-func reset-btn" onclick="resetGame()">重開</button>
                 </div>
             </div>
         </div>
     </div>
     <div class="split-row">
-        <div class="half-block"><h3>小路 (Small Road)</h3><div class="road-viewport"><div id="smallRoad" class="grid small-grid"></div></div></div>
-        <div class="half-block"><h3>蟑螂路 (Cockroach)</h3><div class="road-viewport"><div id="cockroachRoad" class="grid small-grid"></div></div></div>
+        <div class="half-block"><h3>小路</h3><div class="road-viewport"><div id="smallRoad" class="grid small-grid"></div></div></div>
+        <div class="half-block"><h3>蟑螂路</h3><div class="road-viewport"><div id="cockroachRoad" class="grid small-grid"></div></div></div>
     </div>
-    <div><h3>珠盤路 (Bead Plate)</h3><div class="road-viewport"><div id="beadPlate" class="grid bead-plate-grid"></div></div></div>
+    <div><h3>珠盤路</h3><div class="road-viewport"><div id="beadPlate" class="grid bead-plate-grid"></div></div></div>
 
 <footer>
             <p>Copyright © 2026 MENG</p>
@@ -155,7 +155,7 @@
 
     function quickAdd(type) { history.push(type); renderAll(); }
     function undoLast() { if (history.length > 0) { history.pop(); renderAll(); } }
-    function resetGame() { if(confirm('確定清除重開嗎？')) { history = []; renderAll(); } }
+    function resetGame() { if(confirm('確定重開？')) { history = []; renderAll(); } }
 
     function deriveRoad(bigData, gap) {
         let derived = [], matrix = [];
